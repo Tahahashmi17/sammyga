@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOUR FATE AWAITS...</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Arial Black', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #0a0a0a 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body.shake {
+      animation: shake 0.5s infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-10px, -10px) rotate(-1deg); }
+      20% { transform: translate(10px, 10px) rotate(1deg); }
+      30% { transform: translate(-10px, 10px) rotate(0deg); }
+      40% { transform: translate(10px, -10px) rotate(1deg); }
+      50% { transform: translate(-10px, -10px) rotate(-1deg); }
+      60% { transform: translate(10px, 10px) rotate(0deg); }
+      70% { transform: translate(-10px, 10px) rotate(-1deg); }
+      80% { transform: translate(10px, -10px) rotate(1deg); }
+      90% { transform: translate(-10px, -10px) rotate(0deg); }
+    }
+
+    .blood-drip {
+      position: absolute;
+      top: -50px;
+      width: 2px;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, #ff0000);
+      animation: drip 3s infinite;
+    }
+
+    @keyframes drip {
+      0% { top: -50px; opacity: 0; }
+      50% { opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    .container {
+      text-align: center;
+      z-index: 10;
+      padding: 20px;
+    }
+
+    .slap-counter {
+      font-size: 24px;
+      color: #ff0000;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px #ff0000;
+      letter-spacing: 3px;
+    }
+
+    .slap-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .slap-icon {
+      font-size: 40px;
+      color: #ff0000;
+      animation: pulse 2s infinite;
+    }
+
+    .slap-icon.delivered {
+      color: #darkred;
+      opacity: 0.5;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #ff0000;
+      text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000;
+      margin-bottom: 30px;
+      animation: glow 2s infinite;
+      letter-spacing: 5px;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000; }
+      50% { text-shadow: 0 0 40px #ff0000, 0 0 80px #ff0000, 0 0 120px #ff0000; }
+    }
+
+    .warning-message {
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    #countdown {
+      font-size: 72px;
+      color: #fff;
+      font-weight: bold;
+      margin: 40px 0;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .time-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 120px;
+    }
+
+    .time-value {
+      font-size: 80px;
+      color: #ff0000;
+      text-shadow: 0 0 30px #ff0000;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px 30px;
+      border: 3px solid #ff0000;
+      border-radius: 10px;
+      min-width: 120px;
+    }
+
+    .time-label {
+      font-size: 18px;
+      color: #999;
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .doomsday-message {
+      font-size: 28px;
+      color: #ff0000;
+      margin-top: 40px;
+      animation: blink 1s infinite;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.3; }
+    }
+
+    .final-warning {
+      font-size: 36px;
+      color: #ff0000;
+      margin-top: 20px;
+      font-weight: bold;
+      animation: intensePulse 0.5s infinite;
+    }
+
+    @keyframes intensePulse {
+      0%, 100% { transform: scale(1); color: #ff0000; }
+      50% { transform: scale(1.2); color: #ff6666; }
+    }
+
+    #hand-slap {
+      font-size: 150px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    #hand-slap.slap-animation {
+      animation: slapAttack 1s ease-out;
+    }
+
+    @keyframes slapAttack {
+      0% { 
+        transform: translate(-200%, -200%) rotate(-45deg);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(100%, 100%) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .quote {
+      font-size: 20px;
+      color: #999;
+      margin-top: 40px;
+      font-style: italic;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 32px; }
+      .time-value { font-size: 50px; padding: 15px 20px; min-width: 80px; }
+      .time-label { font-size: 14px; }
+      .warning-message { font-size: 18px; }
+      .doomsday-message { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="hand-slap">👋</div>
+  
+  <div class="container">
+    <div class="slap-counter">SLAP BET PROGRESS</div>
+    <div class="slap-icons">
+      <span class="slap-icon delivered">👋</span>
+      <span class="slap-icon delivered">👋</span>
+      <span class="slap-icon delivered">👋</span>
+      <span class="slap-icon delivered">👋</span>
+      <span class="slap-icon">👋</span>
+    </div>
+    
+    <h1>THE FINAL SLAP APPROACHES</h1>
+    <div class="warning-message">SLAP #5 OF 5</div>
+    
+    <div id="countdown">
+      <div class="time-unit">
+        <div class="time-value" id="days">00</div>
+        <div class="time-label">Days</div>
+      </div>
+      <div class="time-unit">
+        <div class="time-value" id="hours">00</div>
+        <div class="time-label">Hours</div>
+      </div>
+      <div class="time-unit">
+        <div class="time-value" id="minutes">00</div>
+        <div class="time-label">Minutes</div>
+      </div>
+      <div class="time-unit">
+        <div class="time-value" id="seconds">00</div>
+        <div class="time-label">Seconds</div>
+      </div>
+    </div>
+    
+    <div class="doomsday-message" id="message">YOUR FATE IS SEALED</div>
+    <div class="quote">"The anticipation is worse than the slap itself... or is it?" - Ancient Slap Bet Wisdom</div>
+  </div>
+
+  <script>
+    // Target date: December 24, 2025, 1:00 PM IST
+    const targetDate = new Date('2026-01-19T18:00:00+05:30').getTime();
+    
+    const messages = [
+      "YOUR FATE IS SEALED",
+      "THE SLAP IS INEVITABLE",
+      "THERE IS NO ESCAPE",
+      "JUDGMENT DAY APPROACHES",
+      "YOUR TIME IS RUNNING OUT",
+      "THE HAND OF JUSTICE COMES"
+    ];
+    
+    let messageIndex = 0;
+    let bloodDripsCreated = 0;
+    
+    function createBloodDrip() {
+      if (bloodDripsCreated < 20) {
+        const drip = document.createElement('div');
+        drip.className = 'blood-drip';
+        drip.style.left = Math.random() * 100 + '%';
+        drip.style.animationDelay = Math.random() * 2 + 's';
+        drip.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(drip);
+        bloodDripsCreated++;
+      }
+    }
+    
+    setInterval(createBloodDrip, 500);
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+      
+      if (distance < 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        document.getElementById('message').innerHTML = '<div class="final-warning">⚡ SLAP TIME! ⚡</div>';
+        document.body.classList.add('shake');
+        document.getElementById('hand-slap').classList.add('slap-animation');
+        document.title = '💥 SLAP TIME! 💥';
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+      
+      // Update page title
+      document.title = `⏰ ${days}d ${hours}h ${minutes}m ${seconds}s - THE SLAP AWAITS`;
+      
+      // Intense effects in final hour
+      if (distance < 3600000) {
+        document.body.classList.add('shake');
+        if (distance < 60000) {
+          document.getElementById('message').innerHTML = '<div class="final-warning">⚡ FINAL MINUTE! BRACE YOURSELF! ⚡</div>';
+        } else if (distance < 300000) {
+          document.getElementById('message').innerHTML = '<div class="final-warning">🔥 LESS THAN 5 MINUTES! 🔥</div>';
+        } else if (distance < 600000) {
+          document.getElementById('message').innerHTML = '<div class="final-warning">⚠️ LESS THAN 10 MINUTES! ⚠️</div>';
+        } else {
+          document.getElementById('message').innerHTML = '<div class="final-warning">🚨 FINAL HOUR! 🚨</div>';
+        }
+      } else {
+        document.body.classList.remove('shake');
+      }
+    }
+    
+    // Rotate messages every 5 seconds
+    setInterval(() => {
+      if (targetDate - new Date().getTime() > 3600000) {
+        document.getElementById('message').textContent = messages[messageIndex];
+        messageIndex = (messageIndex + 1) % messages.length;
+      }
+    }, 5000);
+    
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
